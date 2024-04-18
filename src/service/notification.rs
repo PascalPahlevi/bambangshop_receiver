@@ -29,7 +29,7 @@ impl NotificationService {
             name: APP_CONFIG.get_instance_name().to_string(),
             url: notification_receiver_url
         };
-        let request_url = String = format!("{}/notification/subscribe/{}",
+        let request_url: String = format!("{}/notification/subscribe/{}",
             APP_CONFIG.get_publisher_root_url(), product_type_str);
         let request = REQWEST_CLIENT
             .post(request_url.clone())
@@ -40,7 +40,7 @@ impl NotificationService {
         log::warn_!("Sent subscribe request to: {}", request_url);
 
         return match request {
-            Ok(f) => match f.json::<SubscriberRequest>().await() {
+            Ok(f) => match f.json::<SubscriberRequest>().await {
                 Ok(x) => Ok(x),
                 Err(y) => Err(compose_error_response(
                     Status::NotAcceptable,
@@ -66,7 +66,7 @@ impl NotificationService {
         let product_type_str: &str = product_type_upper.as_str();
         let notification_receiver_url: String = format!("{}/receive",
             APP_CONFIG.get_instance_root_url());
-        let request_url = String = format!("{}/notification/unsubscribe/{}?url={}",
+        let request_url: String = format!("{}/notification/unsubscribe/{}?url={}",
             APP_CONFIG.get_publisher_root_url(), product_type_str, notification_receiver_url);
         let request = REQWEST_CLIENT
             .post(request_url.clone())
@@ -76,7 +76,7 @@ impl NotificationService {
         log::warn_!("Sent unsubscribe request to: {}", request_url);
 
         return match request {
-            Ok(f) => match f.json::<SubscriberRequest>().await() {
+            Ok(f) => match f.json::<SubscriberRequest>().await {
                 Ok(x) => Ok(x),
                 Err(_y) => Err(compose_error_response(
                     Status::NotFound,

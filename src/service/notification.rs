@@ -18,7 +18,7 @@ impl NotificationService {
         return thread::spawn(move || Self::subscribe_request(product_type_clone))
             .join().unwrap();
     }
-    
+
     #[tokio::main]
     async fn subscribe_request(product_type: String) -> Result<SubscriberRequest> {
         let product_type_upper: String = product_type.to_uppercase();
@@ -88,5 +88,10 @@ impl NotificationService {
                 e.to_string()
             ))
         }
+    }
+
+    pub fn receive_notification(payload: Notification) -> Result<Notification> {
+        let subscriber_result: Notification = NotificationRepository::add(payload);
+        return Ok(subscriber_result);
     }
 }
